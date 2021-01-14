@@ -1,0 +1,108 @@
+ Hello.java是源码，包含基本类型四则运算if,for
+ Hello.class是字节码文件
+ Hello.class-info.txt是javap得到的字节码信息
+
+  以下为Hello类中test方法代码的字节码，拷贝过来，然后在每行后面添加自己的注释。
+ 从栈的明细看出，栈最多的时候存放了3个变量，但是字节码信息中，说栈深度为4？
+ 那是因为，栈的深度计算方式，一个深度就是32个字节，double占了64个字节，在下面行号57的位置就占用了4个深度，而不是之前理解的深度2。所以该程序操作数栈深度为4
+经过对该样例的分析，对字节码有了更多的了解。
+
+8个常用类型，在字节码里，
+boolean,byte,char,short,int会根据实际值大小，动态采用bi,i,si等前缀命令创建，但从本地变量表中保存和读取，都是使用的i前缀命令操作。
+long,float,double有自己前缀的命令。
+
+public void test();
+    descriptor: ()V
+    flags: ACC_PUBLIC
+    Code:
+      stack=4, locals=24, args_size=1
+
+ 0: iconst_1  定义一个int1，将该int入栈                                          栈中有值1
+ 1: istore_1  栈pop，将该int保存到本地变量表中，下标1                             栈中无值
+ 2: iconst_0  定义一个int 0，将该int入栈                                         栈中有值0
+ 3: istore_1  栈pop，将该int保存到本地变量表中，下标1                             栈中无值
+ 4: bipush        97  将单字节值97入栈                                          栈中有值97,
+ 6: istore_2          pop栈，将97保存到本地变量表，下标2                          栈中无值
+ 7: bipush        49  将单字节值49入栈                                          栈中有值49
+ 9: istore_2          pop栈，将49保存到本地变量表，下标2                         栈中无值
+10: bipush        -2  将单字节-2入栈                                            栈中有值-2
+12: istore_3          pop栈，将-2保存到本地变量表，下标3                          栈中无值
+13: iconst_5          将int 5入栈，                                             栈中有值5
+14: istore        4   pop栈得到5，保存到本地变量表，下标4                         栈中无值
+16: bipush        99  将字节99入栈                                              栈中有值99
+18: istore        5   pop栈得到99，保存到本地变量表，下班5                        栈中无值
+20: ldc2_w        #5                  // long 578l  将578从常量池入栈           栈中有值578l
+23: lstore        6   pop栈得到578l，保存到本地变量表，下标6                     栈中无值
+25: ldc           #7                  // float 45.7f  将45.7f从常量池中入栈     栈中有值45.7f  
+27: fstore        8   pop栈，保存到本地变量表，下标8                             栈中无值
+29: ldc2_w        #8                  // double 66.34d  将66.34从常量池入栈     栈中有值66.34d
+32: dstore        9   pop栈，保存到本地变量表，下标9                              栈中无值
+34: bipush        12  将字节12入栈，                                            栈中有值12
+36: istore        11  pop栈，保存到本地变量表，下标12                            栈中无值
+38: dload         9   本地变量表下标9变量66.34到栈顶，                           栈中有值66.34d
+40: fload         8   本地变量表下标8变量45.7到栈顶                             栈中有值45.7f,66.34d（排前面是栈顶）
+42: f2d               栈POP，得到45.7，然后float转double,入栈                   栈中有值45.7d,66.34d
+43: dadd              栈pop两次，依次变量2（66.34d）+变量1(45.7d)，结果入栈      栈中有值112.04d
+44: dstore        12  栈pop，保存到本地变量表，下标12                           栈中无值
+46: iload         5   本地变量表下标5变量99入栈，                               栈中有值99
+48: bipush        56  字节56入栈                                               栈中有值56,99
+50: isub               pop两次，依次变量2-变量1                                 栈中有值43
+51: istore        14  pop栈，存入本地变量表，下标14                             栈中无值
+53: dload         9   本地变量表下标9变量66.34到栈顶，                          栈中有值66.34d
+55: fload         8   本地变量表下标8变量45.7到栈顶                              栈中有值45.7f,66.34d
+57: f2d               栈POP，得到45.7，然后float转double,入栈                   栈中有值45.7d,66.34d
+58: dsub              栈pop两次，依次变量2-变量1，得到结果入栈                   栈中有值20.64d
+59: dstore        15  pop栈，保存到本地变量，下标15                             栈中无值
+61: iload         5   本地变量表下标5变量99入栈，                               栈中有值99
+63: iload         4   本地变量表下标4变量5入栈，                                栈中有值5,99
+65: imul              pop两次，依次变量2*变量1，得到结果入栈                    栈中有值495
+66: istore        17  pop栈，保存到本地变量表，下标17                           栈中无值
+68: fload         8   本地变量表下标8变量45.7入栈，                             栈中有值45.7f
+70: iload         5   本地变量表下标5变量99入栈，                               栈中有值99,45.7f
+72: i2f               pop栈，int转float,入栈                                   栈中有值99f,45.7f
+73: fmul              pop两次，一次变量2*变量1，入栈                            栈中有值4524.3f
+74: f2d               pop栈，float转double,入栈                                栈中有值4524.3d
+75: dstore        18  pop栈，保存到本地变量表，下标18                            栈中无值
+77: iload         5   本地变量表下标5变量99入栈，                               栈中有值99
+79: iload         4   本地变量表下标4变量5入栈，                                栈中有值5,99
+81: idiv              pop两次，依次变量2（99）/变量1（5），结果入栈              栈中有值19
+82: istore        20  pop栈，保存到本地变量表，下标20                            栈中无值
+84: iload         5   本地变量表下标5变量99入栈，                               栈中有值99
+86: i2f               pop,int转float,入栈                                      栈中有值99f
+87: fload         8   本地变量表下标8变量45.7f入栈                               栈中有值45.7f,99f
+89: fdiv              pop两次，依次变量2/变量1，结果入栈                         栈中有值2.16630197f
+90: f2d               pop,float转double,入栈push                               栈中有值2.16630197d
+91: dstore        21  pop栈，保存到本地变量表，下标21                            栈中无值
+93: dload         12  获取本地变量表下标12变量112.04d，入栈                      栈中有值112.04d
+95: iload         17  获取本地变量表下标17变量495，入栈                          栈中有值495,112.04d
+97: i2d               pop,int转double,push                                     栈中有值495d,112.04d
+98: dcmpl             pop两次，依次变量2>变量1的逻辑结果-1，入栈                  栈中有值-1  （-1表示逻辑结果为-1）
+99: ifle          114 pop栈，得到-1，如果-1小于等于0，跳转到行号114               栈中无值
+102: getstatic     #10                 // Field java/lang/System.out:Ljava/io/PrintStream;  本代码不执行
+105: sipush        666  本代码不执行
+108: invokevirtual #11                 // Method java/io/PrintStream.println:(I)V  本代码不执行
+111: goto          123  本代码不执行
+114: getstatic     #10                 // Field java/lang/System.out:Ljava/io/PrintStream;  获取类的静态域，入栈                                     栈中有值 【类的静态域】
+117: sipush        555  将短整型常量入栈                                                                                                         栈中有值555，【类的静态域】
+120: invokevirtual #11                 // Method java/io/PrintStream.println:(I)V  根据该方法入参，pop两次，依次变量2调用println带参数变量1，      栈中无值
+123: iconst_0           将int 0入栈，                                                                                                           栈中有值0
+124: istore        23   pop，保存到本地变量表，下标23                                                                                             栈中无值
+126: iload         23   获取本地变量表下标23变量0入栈                                                                                            栈中有值0
+128: bipush        10   将字节10入栈                                                                                                            栈中有值10,0
+130: if_icmpge     165  pop两次，依次，如果变量2大于等于变量1，则跳转到行号165                                                                     栈中无值
+133: getstatic     #10                 // Field java/lang/System.out:Ljava/io/PrintStream;    获取静态方法引用，入栈                             栈中有值 【类的静态域】
+136: new           #12                 // class java/lang/StringBuilder  # 创建对象，引用入栈                                                    栈中有值 【sb对象引用】，【类的静态域】 
+139: dup                                                                  复制一份引用                                                          栈中有值 【sb对象引用】，【sb对象引用】，【类的静态域】 
+140: invokespecial #13                 // Method java/lang/StringBuilder."<init>":()V  pop一次，调用init方法                                     栈中有值 【sb对象引用】，【类的静态域】 
+143: ldc           #14                 // String current is                 将current is 入栈                                                   栈中有值 【current is】,【sb对象引用】，【类的静态域】 
+145: invokevirtual #15                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;  根据该方法入参，pop两次，【sb对象引用】.append，参数为变量1=【current is】 ,结果（还是sb对象引用）入栈     栈中有值 【sb对象引用】, 【类的静态域】 
+148: iload         23     获取本地变量表下标23变量入栈，该值会变化，因为后面有iinc操作，此处展示第一次情况                                                                                                                             栈中有值 0，【sb对象引用】, 【类的静态域】 
+150: invokevirtual #16                 // Method java/lang/StringBuilder.append:(I)Ljava/lang/StringBuilder;  根据该方法，pop两次，变量2（sb对象）.append,参数为变量1=0，结果（结果还是sb对象）入栈                                   栈中有值 【sb对象引用】, 【类的静态域】 
+153: invokevirtual #17                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;  根据该方法，pop依次，sb对象.toString,结果入栈                                                                              栈中有值 "current is 0",【类的静态域】 
+156: invokevirtual #18                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V  根据该方法，pop两次，【类的静态域】.println，无结果                                                                                   栈中无值
+159: iinc          23, 1     对本地变量表下标23的变量+1                                                                                                                                                                            栈中无值
+162: goto          126        跳转到行号126                                                                                                                                                                                       栈中无值
+165: getstatic     #10                 // Field java/lang/System.out:Ljava/io/PrintStream;  获取PS类的静态域，入栈                                                                                                                     栈中有值 【类的静态域】
+168: ldc2_w        #19                 // double 4.8d  将常量4.8d入栈                                                                                                                                                             栈中有值 4.8d,【类的静态域】
+171: invokevirtual #21                 // Method java/io/PrintStream.println:(D)V  根据方法，pop两次，变量2.println ,参数变量1，无返回值                                                                                             栈中无值
+174: return               返回，栈中无值返回null                                                                                                                                                                                    栈中无值

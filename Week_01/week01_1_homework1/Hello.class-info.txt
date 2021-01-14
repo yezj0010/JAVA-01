@@ -1,0 +1,283 @@
+Classfile /D:/projects/supercoin/common/src/main/java/com/supercoin/common/test/study/javagaojie/week01/bytecode/Hello.class
+  Last modified 2021-1-12; size 1594 bytes
+  MD5 checksum ffaad7633b5f6a18e1f800d8cef1f6a8
+  Compiled from "Hello.java"
+public class com.supercoin.common.test.study.javagaojie.week01.bytecode.Hello
+  minor version: 0
+  major version: 52
+  flags: ACC_PUBLIC, ACC_SUPER
+Constant pool:
+   #1 = Methodref          #22.#64        // java/lang/Object."<init>":()V
+   #2 = Class              #65            // com/supercoin/common/test/study/javagaojie/week01/bytecode/Hello
+   #3 = Methodref          #2.#64         // com/supercoin/common/test/study/javagaojie/week01/bytecode/Hello."<init>":()V
+   #4 = Methodref          #2.#66         // com/supercoin/common/test/study/javagaojie/week01/bytecode/Hello.test:()V
+   #5 = Long               578l
+   #7 = Float              45.7f
+   #8 = Double             66.34d
+  #10 = Fieldref           #67.#68        // java/lang/System.out:Ljava/io/PrintStream;
+  #11 = Methodref          #69.#70        // java/io/PrintStream.println:(I)V
+  #12 = Class              #71            // java/lang/StringBuilder
+  #13 = Methodref          #12.#64        // java/lang/StringBuilder."<init>":()V
+  #14 = String             #72            // current is
+  #15 = Methodref          #12.#73        // java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+  #16 = Methodref          #12.#74        // java/lang/StringBuilder.append:(I)Ljava/lang/StringBuilder;
+  #17 = Methodref          #12.#75        // java/lang/StringBuilder.toString:()Ljava/lang/String;
+  #18 = Methodref          #69.#76        // java/io/PrintStream.println:(Ljava/lang/String;)V
+  #19 = Double             4.8d
+  #21 = Methodref          #69.#77        // java/io/PrintStream.println:(D)V
+  #22 = Class              #78            // java/lang/Object
+  #23 = Utf8               <init>
+  #24 = Utf8               ()V
+  #25 = Utf8               Code
+  #26 = Utf8               LineNumberTable
+  #27 = Utf8               LocalVariableTable
+  #28 = Utf8               this
+  #29 = Utf8               Lcom/supercoin/common/test/study/javagaojie/week01/bytecode/Hello;
+  #30 = Utf8               main
+  #31 = Utf8               ([Ljava/lang/String;)V
+  #32 = Utf8               args
+  #33 = Utf8               [Ljava/lang/String;
+  #34 = Utf8               test
+  #35 = Utf8               i
+  #36 = Utf8               I
+  #37 = Utf8               a
+  #38 = Utf8               Z
+  #39 = Utf8               b
+  #40 = Utf8               C
+  #41 = Utf8               h
+  #42 = Utf8               B
+  #43 = Utf8               c
+  #44 = Utf8               S
+  #45 = Utf8               d
+  #46 = Utf8               e
+  #47 = Utf8               J
+  #48 = Utf8               f
+  #49 = Utf8               F
+  #50 = Utf8               g
+  #51 = Utf8               D
+  #52 = Utf8               sum
+  #53 = Utf8               sum2
+  #54 = Utf8               sub
+  #55 = Utf8               sub2
+  #56 = Utf8               mul
+  #57 = Utf8               mul2
+  #58 = Utf8               div
+  #59 = Utf8               div2
+  #60 = Utf8               StackMapTable
+  #61 = Class              #65            // com/supercoin/common/test/study/javagaojie/week01/bytecode/Hello
+  #62 = Utf8               SourceFile
+  #63 = Utf8               Hello.java
+  #64 = NameAndType        #23:#24        // "<init>":()V
+  #65 = Utf8               com/supercoin/common/test/study/javagaojie/week01/bytecode/Hello
+  #66 = NameAndType        #34:#24        // test:()V
+  #67 = Class              #79            // java/lang/System
+  #68 = NameAndType        #80:#81        // out:Ljava/io/PrintStream;
+  #69 = Class              #82            // java/io/PrintStream
+  #70 = NameAndType        #83:#84        // println:(I)V
+  #71 = Utf8               java/lang/StringBuilder
+  #72 = Utf8               current is
+  #73 = NameAndType        #85:#86        // append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+  #74 = NameAndType        #85:#87        // append:(I)Ljava/lang/StringBuilder;
+  #75 = NameAndType        #88:#89        // toString:()Ljava/lang/String;
+  #76 = NameAndType        #83:#90        // println:(Ljava/lang/String;)V
+  #77 = NameAndType        #83:#91        // println:(D)V
+  #78 = Utf8               java/lang/Object
+  #79 = Utf8               java/lang/System
+  #80 = Utf8               out
+  #81 = Utf8               Ljava/io/PrintStream;
+  #82 = Utf8               java/io/PrintStream
+  #83 = Utf8               println
+  #84 = Utf8               (I)V
+  #85 = Utf8               append
+  #86 = Utf8               (Ljava/lang/String;)Ljava/lang/StringBuilder;
+  #87 = Utf8               (I)Ljava/lang/StringBuilder;
+  #88 = Utf8               toString
+  #89 = Utf8               ()Ljava/lang/String;
+  #90 = Utf8               (Ljava/lang/String;)V
+  #91 = Utf8               (D)V
+{
+  public com.supercoin.common.test.study.javagaojie.week01.bytecode.Hello();
+    descriptor: ()V
+    flags: ACC_PUBLIC
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0
+         1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+         4: return
+      LineNumberTable:
+        line 6: 0
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0       5     0  this   Lcom/supercoin/common/test/study/javagaojie/week01/bytecode/Hello;
+
+  public static void main(java.lang.String[]);
+    descriptor: ([Ljava/lang/String;)V
+    flags: ACC_PUBLIC, ACC_STATIC
+    Code:
+      stack=2, locals=1, args_size=1
+         0: new           #2                  // class com/supercoin/common/test/study/javagaojie/week01/bytecode/Hello
+         3: dup
+         4: invokespecial #3                  // Method "<init>":()V
+         7: invokevirtual #4                  // Method test:()V
+        10: return
+      LineNumberTable:
+        line 9: 0
+        line 10: 10
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0      11     0  args   [Ljava/lang/String;
+
+  public void test();
+    descriptor: ()V
+    flags: ACC_PUBLIC
+    Code:
+      stack=4, locals=24, args_size=1
+         0: iconst_1
+         1: istore_1
+         2: iconst_0
+         3: istore_1
+         4: bipush        97
+         6: istore_2
+         7: bipush        49
+         9: istore_2
+        10: bipush        -2
+        12: istore_3
+        13: iconst_5
+        14: istore        4
+        16: bipush        99
+        18: istore        5
+        20: ldc2_w        #5                  // long 578l
+        23: lstore        6
+        25: ldc           #7                  // float 45.7f
+        27: fstore        8
+        29: ldc2_w        #8                  // double 66.34d
+        32: dstore        9
+        34: bipush        12
+        36: istore        11
+        38: dload         9
+        40: fload         8
+        42: f2d
+        43: dadd
+        44: dstore        12
+        46: iload         5
+        48: bipush        56
+        50: isub
+        51: istore        14
+        53: dload         9
+        55: fload         8
+        57: f2d
+        58: dsub
+        59: dstore        15
+        61: iload         5
+        63: iload         4
+        65: imul
+        66: istore        17
+        68: fload         8
+        70: iload         5
+        72: i2f
+        73: fmul
+        74: f2d
+        75: dstore        18
+        77: iload         5
+        79: iload         4
+        81: idiv
+        82: istore        20
+        84: iload         5
+        86: i2f
+        87: fload         8
+        89: fdiv
+        90: f2d
+        91: dstore        21
+        93: dload         12
+        95: iload         17
+        97: i2d
+        98: dcmpl
+        99: ifle          114
+       102: getstatic     #10                 // Field java/lang/System.out:Ljava/io/PrintStream;
+       105: sipush        666
+       108: invokevirtual #11                 // Method java/io/PrintStream.println:(I)V
+       111: goto          123
+       114: getstatic     #10                 // Field java/lang/System.out:Ljava/io/PrintStream;
+       117: sipush        555
+       120: invokevirtual #11                 // Method java/io/PrintStream.println:(I)V
+       123: iconst_0
+       124: istore        23
+       126: iload         23
+       128: bipush        10
+       130: if_icmpge     165
+       133: getstatic     #10                 // Field java/lang/System.out:Ljava/io/PrintStream;
+       136: new           #12                 // class java/lang/StringBuilder
+       139: dup
+       140: invokespecial #13                 // Method java/lang/StringBuilder."<init>":()V
+       143: ldc           #14                 // String current is
+       145: invokevirtual #15                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+       148: iload         23
+       150: invokevirtual #16                 // Method java/lang/StringBuilder.append:(I)Ljava/lang/StringBuilder;
+       153: invokevirtual #17                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+       156: invokevirtual #18                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+       159: iinc          23, 1
+       162: goto          126
+       165: getstatic     #10                 // Field java/lang/System.out:Ljava/io/PrintStream;
+       168: ldc2_w        #19                 // double 4.8d
+       171: invokevirtual #21                 // Method java/io/PrintStream.println:(D)V
+       174: return
+      LineNumberTable:
+        line 14: 0
+        line 15: 2
+        line 17: 4
+        line 18: 7
+        line 20: 10
+        line 21: 13
+        line 22: 16
+        line 23: 20
+        line 24: 25
+        line 25: 29
+        line 28: 34
+        line 29: 38
+        line 31: 46
+        line 32: 53
+        line 34: 61
+        line 35: 68
+        line 37: 77
+        line 38: 84
+        line 41: 93
+        line 42: 102
+        line 44: 114
+        line 48: 123
+        line 49: 133
+        line 48: 159
+        line 52: 165
+        line 53: 174
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+          126      39    23     i   I
+            0     175     0  this   Lcom/supercoin/common/test/study/javagaojie/week01/bytecode/Hello;
+            2     173     1     a   Z
+            7     168     2     b   C
+           13     162     3     h   B
+           16     159     4     c   S
+           20     155     5     d   I
+           25     150     6     e   J
+           29     146     8     f   F
+           34     141     9     g   D
+           38     137    11   sum   I
+           46     129    12  sum2   D
+           53     122    14   sub   I
+           61     114    15  sub2   D
+           68     107    17   mul   I
+           77      98    18  mul2   D
+           84      91    20   div   I
+           93      82    21  div2   D
+      StackMapTable: number_of_entries = 4
+        frame_type = 255 /* full_frame */
+          offset_delta = 114
+          locals = [ class com/supercoin/common/test/study/javagaojie/week01/bytecode/Hello, int, int, int, int, int, long, float, double, int, double, int, double, int, double, int, double ]
+          stack = []
+        frame_type = 8 /* same */
+        frame_type = 252 /* append */
+          offset_delta = 2
+          locals = [ int ]
+        frame_type = 250 /* chop */
+          offset_delta = 38
+}
+SourceFile: "Hello.java"
