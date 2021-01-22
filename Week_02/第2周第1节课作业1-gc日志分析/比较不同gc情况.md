@@ -1,4 +1,4 @@
-#1.以下是使用不同gc运行GCLogAnalysis的打印结果
+# 1.以下是使用不同gc运行GCLogAnalysis的打印结果
 
 |gc类型|256m|1g|2g|4g|8g|12g|
 |----|----|----|----|----|----|---|
@@ -10,12 +10,13 @@
 从上表格可以看出，使用g1,内存12g的时候，创建出来的对象最多。  
 CMS gc在256m的时候，有几次还能打印出创建对象个数，但数量很少，其他gc基本上1秒之内都内存泄漏了。
 
-#2.gc日志分析
+# 2.gc日志分析
 接下来进行日志分析，分析为什么会出现上面的情况。
 （以下分区大小，没有除以1024,是除以1000估算的，只是为了大致了解）  
 
-##使用SerialGC 256m时日志如下，进行日志解析以及分析OOM错误原因
-PS F:\> **java -Xmx256m -Xms256m -XX:+UseSerialGC -XX:+PrintGCDetails -XX:+PrintGCDateStamps GCLogAnalysis**
+## 使用SerialGC 256m时日志如下，进行日志解析以及分析OOM错误原因
+```
+PS F:\> java -Xmx256m -Xms256m -XX:+UseSerialGC -XX:+PrintGCDetails -XX:+PrintGCDateStamps GCLogAnalysis
 正在执行...
 2021-01-21T23:33:24.523+0800: [GC (Allocation Failure) 2021-01-21T23:33:24.541+0800: [DefNew: 69902K->8704K(78656K), 0.0076558 secs] 69902K->24024K(253440K), 0.0256551 secs] [Times: user=0.00 sys=0.00, real=0.03 secs]
 时间戳，触发gc ,触发原因是Allocation Failure，时间戳，触发的yong gc,yong区从69m减少到8m(共78m)，耗时7毫秒，堆内存从69m减少到了24m(共253m)，堆剩余空间大于young区，是因为有16m数据跃升到了老年代，gc共耗时25毫秒，后面是系统信息,times是cpu运行时间，sys是io等时间，real是gc实际耗时
@@ -46,10 +47,12 @@ PS F:\> **java -Xmx256m -Xms256m -XX:+UseSerialGC -XX:+PrintGCDetails -XX:+Print
 Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
         at GCLogAnalysis.generateGarbage(GCLogAnalysis.java:48)
         at GCLogAnalysis.main(GCLogAnalysis.java:25)
+```
 
-##使用ParallelGC 1g和4g时的分析比较
+## 使用ParallelGC 1g和4g时的分析比较
+```
 1g时创建对象数量较少，4g时创建对象数量较多  
-**PS F:\> java -Xmx1g -Xms1g -XX:+UseParallelGC -XX:+PrintGCDetails -XX:+PrintGCDateStamps GCLogAnalysis**    
+PS F:\> java -Xmx1g -Xms1g -XX:+UseParallelGC -XX:+PrintGCDetails -XX:+PrintGCDateStamps GCLogAnalysis    
 正在执行...  
 2021-01-22T00:39:59.099+0800: [GC (Allocation Failure) [PSYoungGen: 262144K->43515K(305664K)] 262144K->87526K(1005056K), 0.0151410 secs] [Times: user=0.13 sys=0.08, real=0.02 secs]  
 2021-01-22T00:39:59.147+0800: [GC (Allocation Failure) [PSYoungGen: 305659K->43510K(305664K)] 349670K->165971K(1005056K), 0.0210967 secs] [Times: user=0.08 sys=0.13, real=0.02 secs]  
@@ -89,7 +92,7 @@ PS F:\> java -Xmx4g -Xms4g -XX:+UseParallelGC -XX:+PrintGCDetails -XX:+PrintGCDa
 2021-01-22T00:40:18.284+0800: [GC (Allocation Failure) [PSYoungGen: 1223162K->174587K(1223168K)] 1535429K->608412K(4019712K), 0.0455958 secs] [Times: user=0.42 sys=0.19, real=0.05 secs]  
 2021-01-22T00:40:18.442+0800: [GC (Allocation Failure) [PSYoungGen: 1223163K->174588K(1223168K)] 1656988K->731505K(4019712K), 0.0464641 secs] [Times: user=0.52 sys=0.09, real=0.05 secs]  
 执行结束!共生成对象次数:20361  
-
+```
 
 从上面的日志看出，  
 1g内存时，进行了28次gc(包括2次full gc)，总gc时间预估有490毫秒，程序运行时间500毫秒 
@@ -97,9 +100,10 @@ PS F:\> java -Xmx4g -Xms4g -XX:+UseParallelGC -XX:+PrintGCDetails -XX:+PrintGCDa
 所以并行gc的时候，由于4g时gc总耗时比1g少很多，造成了4g时性能好。
 
 
-##使用CMS gc 1G的时候比Parallel性能好，4G的时候比Parallel性能差
+## 使用CMS gc 1G的时候比Parallel性能好，4G的时候比Parallel性能差
 cms日志文件如下：  
-**PS F:\> java -Xmx1g -Xms1g -XX:+UseConcMarkSweepGC -XX:+PrintGC -XX:+PrintGCDateStamps GCLogAnalysis**  
+```
+PS F:\> java -Xmx1g -Xms1g -XX:+UseConcMarkSweepGC -XX:+PrintGC -XX:+PrintGCDateStamps GCLogAnalysis 
 正在执行...  
 2021-01-22T00:59:26.141+0800: [GC (Allocation Failure)  279616K->81474K(1013632K), 0.0145582 secs]  
 2021-01-22T00:59:26.192+0800: [GC (Allocation Failure)  361090K->162718K(1013632K), 0.0207316 secs]  
@@ -123,7 +127,8 @@ cms日志文件如下：
 2021-01-22T00:59:26.935+0800: [Full GC (Allocation Failure)  937756K->378813K(1013632K), 0.0542302 secs]  
 2021-01-22T00:59:27.023+0800: [GC (Allocation Failure)  658429K->463555K(1013632K), 0.0141564 secs]  
 执行结束!共生成对象次数:17374  
-**PS F:\> java -Xmx4g -Xms4g -XX:+UseConcMarkSweepGC -XX:+PrintGC -XX:+PrintGCDateStamps GCLogAnalysis**  
+
+PS F:\> java -Xmx4g -Xms4g -XX:+UseConcMarkSweepGC -XX:+PrintGC -XX:+PrintGCDateStamps GCLogAnalysis
 正在执行...  
 2021-01-22T01:00:15.396+0800: [GC (Allocation Failure)  886080K->199391K(4083584K), 0.0334686 secs]  
 2021-01-22T01:00:15.529+0800: [GC (Allocation Failure)  1085471K->346236K(4083584K), 0.0422294 secs]  
@@ -131,15 +136,17 @@ cms日志文件如下：
 2021-01-22T01:00:15.825+0800: [GC (Allocation Failure)  1380361K->639664K(4083584K), 0.0645353 secs]  
 2021-01-22T01:00:15.988+0800: [GC (Allocation Failure)  1525744K->796372K(4083584K), 0.0662097 secs]  
 执行结束!共生成对象次数:19361    
+```
 
 从上看出，  
 cms在1g的时候，触发了1次full gc,也是从程序运行开始就进行了gc,gc总耗时390毫秒左右（Parallel为490毫秒，15000个对象）；    
 4g的时候无full gc,总耗时250毫秒左右。gc耗时比Parallel多一点，所以创建对象次数也少一点。  
 1g的时候，cms gc次数比Parallel的多，也还是因为gc总耗时cms比Parallel少一些。
 
-##使用G1的时候，内存越大，性能看起来越好
+## 使用G1的时候，内存越大，性能看起来越好
 比较1g和12g的时候日志差异
-**PS F:\> java -Xmx1g -Xms1g -XX:+UseG1GC -XX:+PrintGC -XX:+PrintGCDateStamps GCLogAnalysis**  
+```
+PS F:\> java -Xmx1g -Xms1g -XX:+UseG1GC -XX:+PrintGC -XX:+PrintGCDateStamps GCLogAnalysis
 正在执行...  
 2021-01-22T01:08:52.025+0800: [GC pause (G1 Evacuation Pause) (young) 60M->20M(1024M), 0.0037995 secs]  
 2021-01-22T01:08:52.040+0800: [GC pause (G1 Evacuation Pause) (young) 79M->40M(1024M), 0.0045038 secs]  
@@ -234,7 +241,7 @@ cms在1g的时候，触发了1次full gc,也是从程序运行开始就进行了
 2021-01-22T01:08:52.992+0800: [GC pause (G1 Evacuation Pause) (mixed) 596M->494M(1024M), 0.0104027 secs]  
 执行结束!共生成对象次数:15679  
 
-**PS F:\> java -Xmx12g -Xms12g -XX:+UseG1GC -XX:+PrintGC -XX:+PrintGCDateStamps GCLogAnalysis**  
+PS F:\> java -Xmx12g -Xms12g -XX:+UseG1GC -XX:+PrintGC -XX:+PrintGCDateStamps GCLogAnalysis
 正在执行...  
 2021-01-22T01:09:18.635+0800: [GC pause (G1 Evacuation Pause) (young) 612M->164M(12G), 0.0276373 secs]  
 2021-01-22T01:09:18.729+0800: [GC pause (G1 Evacuation Pause) (young) 696M->290M(12G), 0.0333343 secs]  
@@ -246,6 +253,7 @@ cms在1g的时候，触发了1次full gc,也是从程序运行开始就进行了
 2021-01-22T01:09:19.316+0800: [GC pause (G1 Evacuation Pause) (young) 1428M->1008M(12G), 0.0319514 secs]  
 2021-01-22T01:09:19.412+0800: [GC pause (G1 Evacuation Pause) (young) 1540M->1121M(12G), 0.0318792 secs]  
 执行结束!共生成对象次数:18456  
+```
 
 从上面看出，12g的时候gc次数明显少于1g，1g的时候有young 和mixed一起发生，12g的时候只有young.  
 两个情况下gc总时间，12g约为290毫秒，1g约为324多毫秒，12g的时候gc暂停占用时间稍微少一些，  
