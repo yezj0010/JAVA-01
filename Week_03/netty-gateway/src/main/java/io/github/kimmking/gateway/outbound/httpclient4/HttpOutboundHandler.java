@@ -4,8 +4,11 @@ package io.github.kimmking.gateway.outbound.httpclient4;
 import io.github.kimmking.gateway.filter.HeaderHttpResponseFilter;
 import io.github.kimmking.gateway.filter.HttpRequestFilter;
 import io.github.kimmking.gateway.filter.HttpResponseFilter;
+import io.github.kimmking.gateway.outbound.ClientType;
+import io.github.kimmking.gateway.outbound.IHttpClient;
 import io.github.kimmking.gateway.router.HttpEndpointRouter;
-import io.github.kimmking.gateway.router.RandomHttpEndpointRouter;
+import io.github.kimmking.gateway.router.HttpEndpointRouterFactory;
+import io.github.kimmking.gateway.router.RouterType;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
@@ -23,25 +26,23 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.*;
-import java.util.logging.Filter;
 import java.util.stream.Collectors;
 
 import static io.netty.handler.codec.http.HttpResponseStatus.NO_CONTENT;
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 
-public class HttpOutboundHandler {
+public class HttpOutboundHandler implements IHttpClient {
     
     private CloseableHttpAsyncClient httpclient;
     private ExecutorService proxyService;
     private List<String> backendUrls;
 
     HttpResponseFilter filter = new HeaderHttpResponseFilter();
-    HttpEndpointRouter router = new RandomHttpEndpointRouter();
+    HttpEndpointRouter router;
 
-    public HttpOutboundHandler(List<String> backends) {
+    public HttpOutboundHandler(List<String> backends, RouterType routerType) {
 
         this.backendUrls = backends.stream().map(this::formatUrl).collect(Collectors.toList());
 
@@ -66,6 +67,8 @@ public class HttpOutboundHandler {
                 .setKeepAliveStrategy((response,context) -> 6000)
                 .build();
         httpclient.start();
+
+        this.router = HttpEndpointRouterFactory.getRouterByType(routerType);
     }
 
     private String formatUrl(String backend) {
@@ -128,7 +131,7 @@ public class HttpOutboundHandler {
             response.headers().set("Content-Type", "application/json");
             response.headers().setInt("Content-Length", Integer.parseInt(endpointResponse.getFirstHeader("Content-Length").getValue()));
 
-            filter.filter(response);
+            filter.filter(response, ClientType.HTTP_CLIENT);//【指明了使用哪种类型的http客户端进行转发】
 
 //            for (Header e : endpointResponse.getAllHeaders()) {
 //                //response.headers().set(e.getName(),e.getValue());

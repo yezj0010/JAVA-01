@@ -1,11 +1,10 @@
 package io.github.kimmking.gateway.inbound;
 
-import io.github.kimmking.gateway.filter.HttpRequestFilter;
-import io.netty.channel.ChannelHandlerContext;
+import io.github.kimmking.gateway.outbound.ClientType;
+import io.github.kimmking.gateway.router.RouterType;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
-import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 
@@ -22,12 +21,12 @@ public class HttpInboundInitializer extends ChannelInitializer<SocketChannel> {
 	@Override
 	public void initChannel(SocketChannel ch) {
 		ChannelPipeline p = ch.pipeline();
-//		if (sslCtx != null) {
-//			p.addLast(sslCtx.newHandler(ch.alloc()));
-//		}
 		p.addLast(new HttpServerCodec());
-		//p.addLast(new HttpServerExpectContinueHandler());
 		p.addLast(new HttpObjectAggregator(1024 * 1024));
-		p.addLast(new HttpInboundHandler(this.proxyServer));
+
+
+		//可以修改为ClientType.NETTY，但是高频访问会请求不到，说客户端断开连接，估计哪里写的还有问题
+		//路由器类型也可以选择
+		p.addLast(new HttpInboundHandler(this.proxyServer, ClientType.OKHTTP, RouterType.RoundRibbon));
 	}
 }
