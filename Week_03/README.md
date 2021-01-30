@@ -14,4 +14,4 @@ System.out.println(GATEWAY_NAME + " " + GATEWAY_VERSION +" started at http://loc
 ```
 
 **基于该项目，完成了作业，代码见【netty-gateway】**  
-**## 每题详细思路介绍见每题的.md文件**
+**每题详细思路介绍见每题的.md文件**

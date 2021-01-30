@@ -1,5 +1,5 @@
 ### 1-2.使用netty实现后端http访问（代替上一步骤）
-与另外两个http客户端保持名称一致，增加类NettyClientOutboundHandler，实现IHttpClient接口，里面大致逻辑与OkhttpOutboundHandler和HttpOutboundHandler一样  
+与另外两个http客户端保持名称一致，增加类**NettyClientOutboundHandler**，实现IHttpClient接口，里面大致逻辑与OkhttpOutboundHandler和HttpOutboundHandler一样  
 只是转发时http调用使用的是netty客户端，然后去掉了使用线程池去异步调用，因为netty本身就是异步的。    
 详细内容见项目文件：    
 io.github.kimmking.gateway.inbound.HttpInboundInitializer  

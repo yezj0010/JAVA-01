@@ -1,5 +1,5 @@
 ### 1-1.将第二周作业中的okhttp代码整合到该项目中
-在原有项目基础上，完成了OkhttpOutboundHandler类的开发，将第二周作业中的okhttp替换掉了项目中原有的httpClient.  
+在原有项目基础上，完成了**OkhttpOutboundHandler**类的开发，将第二周作业中的okhttp替换掉了项目中原有的httpClient.  
 详细内容见项目文件：
 io.github.kimmking.gateway.outbound.okhttp.OKHttpUtils  
 io.github.kimmking.gateway.inbound.HttpInboundInitializer  
