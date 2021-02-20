@@ -1,4 +1,4 @@
-package cc.yezj;
+package cc.yezj.bean;
 
 
 import lombok.AllArgsConstructor;

@@ -9,6 +9,8 @@ import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
 public class MyNameSpaceHandler extends NamespaceHandlerSupport {
 
     public void init() {
-        registerBeanDefinitionParser("myelement", new MyBeanDefinitionParser());
+        registerBeanDefinitionParser("student", new StudentParser());
+        registerBeanDefinitionParser("klass", new KlassParser());
+        registerBeanDefinitionParser("school", new SchoolParser());
     }
 }
