@@ -21,5 +21,4 @@ TestByAnnotation类中使用的是applicationContext2.xml配置文件，使用�
 
 
 ### 第5周第1课作业3：实现一个 Spring XML 自定义配置，配置一组 Bean。
-https://www.cnblogs.com/java-zhao/p/7619922.html
 代码详见maven项目 **week5class1work3_springdiy**

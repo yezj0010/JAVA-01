@@ -1,21 +1,25 @@
 package cc.yezj;
 
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Resource;
 
-/**
- * Created by Deng jin on 2021/2/19 0:04
- */
 @Data
-public class School {
-    private String name;
-
-    private int age;
-
-    private Principal principal;
-
-    public void detail(){
-        System.out.println(toString());
+public class School implements ISchool {
+    
+    // Resource 
+    @Autowired(required = true) //primary
+    Klass class1;
+    
+    @Resource(name = "student100")
+    Student student100;
+    
+    @Override
+    public void ding(){
+    
+        System.out.println("Class1 have " + this.class1.getStudents().size() + " students and one is " + this.student100);
+        
     }
+    
 }
