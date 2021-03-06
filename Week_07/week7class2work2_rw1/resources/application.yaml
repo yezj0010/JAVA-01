@@ -1,0 +1,21 @@
+# Spring配置
+spring:
+  datasource:
+    write: # 写库
+      url: jdbc:mysql://127.0.0.1:3306/shop?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=false
+      username: root
+      password: 123456
+    read: # 读库
+      url: jdbc:mysql://127.0.0.1:3306/shop2?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=false
+      username: root
+      password: 123456
+  jpa:
+    database: mysql
+    generate-ddl: false
+    show-sql: false
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+
+
