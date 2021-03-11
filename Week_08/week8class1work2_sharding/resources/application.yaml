@@ -1,0 +1,27 @@
+spring:
+  shardingsphere:
+    datasource:
+      common:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        username: root
+        password: 123456
+      names: primary_ds,replica_ds_0
+      primary_ds:
+        jdbc-url: jdbc:mysql://localhost:9316/shop?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF-8
+      replica_ds_0:
+        jdbc-url: jdbc:mysql://localhost:9317/shop?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF-8
+    props:
+      sql-show: true
+    rules:
+      replica-query:
+        data-sources:
+          pr_ds:
+            primary-data-source-name: primary_ds
+            replica-data-source-names: replica_ds_0
+            load-balancer-name: round_robin
+        load-balancers:
+          round_robin:
+            type: ROUND_ROBIN
+            props:
+              default: 0
