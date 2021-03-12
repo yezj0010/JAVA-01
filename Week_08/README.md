@@ -6,7 +6,7 @@
 springboot2.*与shardingSphere5.0.0-alpha存在兼容性问题。  
 
 
-操作步骤
+操作步骤  
 ####1.初始化数据库
 建表sql见**initSimpleShop.sql**  
 本建表语句使用了存储过程，批量创建分表。  
@@ -28,7 +28,7 @@ springboot2.*与shardingSphere5.0.0-alpha存在兼容性问题。
 /updateState  【改】改接口为根据订单id,用户id修改订单状态。  
 /deleteOrder   【删】该接口为根据订单id,用户id，删除订单。  
 
-以下是按照以上接口顺序，一次执行，打印出的真实执行sql的日志  
+以下是按照以上接口顺序，依次执行，打印出的真实执行sql的日志  
 ```
 【新增一个订单和订单项】根据配置文件配置的规则，userId为13的用户，确定了库下标为1，表下标为13,
 2021-03-13 00:43:15.838  INFO 11212 --- [nio-8012-exec-9] ShardingSphere-SQL                       : Logic SQL: insert into t_order(id,user_id,total_amount,state,create_time) values(?,?,?,?,?)
@@ -81,5 +81,7 @@ springboot2.*与shardingSphere5.0.0-alpha存在兼容性问题。
 PS：  
 本作业完成时，最开始使用的是JPA，但在修改的时候，一直报错Can not update sharding key, logic table: [t_order], column: [user_id].    
 原因是JPA执行update操作时，会重写sql，将每个字段都set一遍，where是主键，但是我使用的是user_id作为分片字段，所以报该错误（不可以修改分片字段的值）。      
-解决办法：将JPA替换成mybatis，解决了该问题。（多次尝试其他办法禁止update语句重写，但不生效）。       
+解决办法：将JPA替换成mybatis，解决了该问题。（多次尝试不同的写法，想禁止update语句重写，但没效果）。       
+
+### 第8周第2课作业2：（必做）基于 hmily TCC 或 ShardingSphere 的 Atomikos XA 实现一个简单的分布式事务应用 demo（二选一）。  
 
