@@ -5,10 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.math.BigDecimal;
 
 /**
@@ -18,29 +14,29 @@ import java.math.BigDecimal;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "t_order_item")
-@Entity
+//@Table(name = "t_order_item")
+//@Entity
 public class TbOrderItem {
-    @Id
+//    @Id
     private Long id;
 
-    @Column(name = "order_id")
+//    @Column(name = "order_id")
     private Long orderId;
 
-    @Column(name = "user_id")
+//    @Column(name = "user_id")
     private Long userId;
 
-    @Column(name = "product_id")
+//    @Column(name = "product_id")
     private String productId;
 
-    @Column(name = "product_price")
+//    @Column(name = "product_price")
     private BigDecimal productPrice;
 
-    @Column(name = "product_num")
+//    @Column(name = "product_num")
     private Integer productNum;
 
     private Integer state;
 
-    @Column(name = "create_time")
+//    @Column(name = "create_time")
     private Long createTime;
 }

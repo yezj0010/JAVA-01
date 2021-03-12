@@ -2,8 +2,8 @@ package cc.yezj.service;
 
 import cc.yezj.entity.TbOrder;
 import cc.yezj.entity.TbOrderItem;
-import cc.yezj.rep.OrderItemRepository;
-import cc.yezj.rep.OrderRepository;
+import cc.yezj.mapper.TbOrderItemMapper;
+import cc.yezj.mapper.TbOrderMapper;
 import cc.yezj.vo.OrderRequestVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,20 +23,20 @@ import java.util.Random;
 @Slf4j
 public class WriteAndReadService{
     @Autowired
-    private OrderRepository orderRepository;
+    private TbOrderMapper orderRepository;
     @Autowired
-    private OrderItemRepository orderItemRepository;
+    private TbOrderItemMapper orderItemRepository;
 
     public long count(){
         return orderRepository.count();
     }
 
-    public void init1wData(){
+    public Map init1wData(){
         Long createTime = System.currentTimeMillis();
         Random random = new Random();
 
 //        for(int i=0;i<10000;i++){
-        for(int i=0;i<1;i++){
+//        for(int i=0;i<1;i++){
             long time = System.currentTimeMillis();
             long orderId = time;
             long userId = random.nextInt(100);//1万笔订单中，总有重复的
@@ -50,9 +50,9 @@ public class WriteAndReadService{
             order.setTotalAmount(totalAmount);
             order.setState(0);
             order.setCreateTime(createTime);
-            order = orderRepository.save(order);
+            orderRepository.save(order);
 
-            log.info("新生成的订单，orderId={},userId={}", order.getId(), order.getUserId());
+            log.info("新生成的订单，orderId={},userId={},所在库下标{}，所在表下标{}", order.getId(), order.getUserId(), userId%2, userId%16);
 
             TbOrderItem orderItem = new TbOrderItem();
             long orderItemId = time+1;
@@ -65,13 +65,18 @@ public class WriteAndReadService{
             orderItem.setState(0);
             orderItem.setCreateTime(createTime);
 
-            orderItem = orderItemRepository.save(orderItem);
-            log.info("新生成的订单项id={},orderId={},userId={}", orderItem.getId(), orderItem.getOrderId(), orderItem.getUserId());
-        }
+            orderItemRepository.save(orderItem);
+            log.info("新生成的订单项id={},orderId={},userId={},所在库下标{}，所在表下标{}", orderItem.getId(), orderItem.getOrderId(), orderItem.getUserId(), userId%2, userId%16);
+
+            Map map = new HashMap();
+            map.put("数据库下标", userId%2);
+            map.put("表下下标", userId%16);
+            map.put("用户id", userId);
+//        }
+        return map;
     }
 
     public Map findAll(OrderRequestVO requestVO){
-        //TODO 调用findAllWithItem方法会报错，后期排查原因
         List<TbOrder> orders = orderRepository.findAllByUserId(requestVO.getUserId());
         List<TbOrderItem> items = orderItemRepository.findAllByUserId(requestVO.getUserId());
         Map map = new HashMap();
@@ -84,8 +89,12 @@ public class WriteAndReadService{
         Long orderId = requestVO.getOrderId();
         Long userId = requestVO.getUserId();
         Integer state = requestVO.getState();
-        TbOrder order = orderRepository.findByIdAndUserId(orderId, userId);
-        TbOrderItem orderItem = orderItemRepository.findByOrderIdAndUserId(orderId, userId);
+        Map map = new HashMap();
+        map.put("orderId", orderId);
+        map.put("userId", userId);
+        map.put("state", state);
+        TbOrder order = orderRepository.findByIdAndUserId(map);
+        TbOrderItem orderItem = orderItemRepository.findByOrderIdAndUserId(map);
         if(order==null || orderItem==null){
             throw new RuntimeException("未找到订单");
         }
@@ -95,20 +104,25 @@ public class WriteAndReadService{
 
 //        orderRepository.save(order);
 //        orderItemRepository.save(orderItem);
-
-        orderRepository.uuuuuuuu(orderId, userId, state);
-        orderItemRepository.uuuuuuuu(orderId, userId, state);
+        orderRepository.uuuuuuuu(map);
+        orderItemRepository.uuuuuuuu(map);
     }
 
     public void deleteOrder(OrderRequestVO requestVO){
         Long orderId = requestVO.getOrderId();
         Long userId = requestVO.getUserId();
-        orderRepository.deleteByIdAndUserId(orderId, userId);
-        orderItemRepository.deleteByOrderIdAndUserId(orderId, userId);
-    }
+        Integer state = requestVO.getState();
+        Map map = new HashMap();
+        map.put("orderId", orderId);
+        map.put("userId", userId);
+        map.put("state", state);
+        TbOrder order = orderRepository.findByIdAndUserId(map);
+        TbOrderItem orderItem = orderItemRepository.findByOrderIdAndUserId(map);
+        if(order==null || orderItem==null){
+            throw new RuntimeException("未找到订单");
+        }
 
-    public static void main(String[] args) {
-        System.out.println(1615537123290l%16);
+        orderRepository.deleteByIdAndUserId(map);
+        orderItemRepository.deleteByOrderIdAndUserId(map);
     }
-
 }

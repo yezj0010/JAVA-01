@@ -27,15 +27,11 @@ public class TestController {
      * 初始化1万条数据
      * @return
      */
-    @ApiOperation(value = "【增】初始化1万条数据")
-    @PostMapping("/init1wData")
+    @ApiOperation(value = "【增】初始化1条数据")
+    @PostMapping("/initOneData")
     public Response init(){
-        long count = writeAndReadService.count();
-        if(count>0){
-            throw new RuntimeException("已经初始化");
-        }
-        writeAndReadService.init1wData();
-        return Response.ok();
+        Map map = writeAndReadService.init1wData();
+        return Response.ok(map);
     }
 
     /**

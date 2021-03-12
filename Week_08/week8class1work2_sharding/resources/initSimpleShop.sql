@@ -1,10 +1,10 @@
--- 先使用docker启动好两个mysql实例，每个实例执行建库语句
+-- 创建数据库，根据实际情况修改库名
 create database if not exists shop default character set = 'utf8mb4';
 
 use shop;
 
 -- 使用存储过程，在每个库中单独运行，创建出16张t_order表和16张t_order_item表
-CREATE DEFINER=`root`@`%` PROCEDURE `createTablesWithIndex`()
+CREATE PROCEDURE `createTablesWithIndex`()
 BEGIN
 		DECLARE `@i` INT(11);
 		DECLARE `@createOrderSql` VARCHAR(2560);
