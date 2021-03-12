@@ -18,17 +18,26 @@ import java.math.BigDecimal;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "t_order")
+@Table(name = "t_order_item")
 @Entity
-public class TbOrder {
+public class TbOrderItem {
     @Id
     private Long id;
+
+    @Column(name = "order_id")
+    private Long orderId;
 
     @Column(name = "user_id")
     private Long userId;
 
-    @Column(name = "total_amount")
-    private BigDecimal totalAmount;
+    @Column(name = "product_id")
+    private String productId;
+
+    @Column(name = "product_price")
+    private BigDecimal productPrice;
+
+    @Column(name = "product_num")
+    private Integer productNum;
 
     private Integer state;
 

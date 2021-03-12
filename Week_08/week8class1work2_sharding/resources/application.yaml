@@ -1,27 +1,68 @@
+server:
+  port: 8012
+
 spring:
   shardingsphere:
-    datasource:
-      common:
-        type: com.zaxxer.hikari.HikariDataSource
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        username: root
-        password: 123456
-      names: primary_ds,replica_ds_0
-      primary_ds:
-        jdbc-url: jdbc:mysql://localhost:9316/shop?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF-8
-      replica_ds_0:
-        jdbc-url: jdbc:mysql://localhost:9317/shop?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF-8
     props:
       sql-show: true
+    datasource:
+      names: ds_0,ds_1
+      ds_0:
+        driver-class-name: com.mysql.jdbc.Driver
+        jdbc-url: jdbc:mysql://localhost:9316/shop?serverTimezone=UTC&useSSL=false
+        max-active: 16
+        password: 123456
+        type: com.zaxxer.hikari.HikariDataSource
+        username: root
+      ds_1:
+        driver-class-name: com.mysql.jdbc.Driver
+        jdbc-url: jdbc:mysql://localhost:9317/shop?serverTimezone=UTC&useSSL=false
+        max-active: 16
+        password: 123456
+        type: com.zaxxer.hikari.HikariDataSource
+        username: root
     rules:
-      replica-query:
-        data-sources:
-          pr_ds:
-            primary-data-source-name: primary_ds
-            replica-data-source-names: replica_ds_0
-            load-balancer-name: round_robin
-        load-balancers:
-          round_robin:
-            type: ROUND_ROBIN
+      sharding:
+        binding-tables: t_order,t_order_item  # 将这两张表这只为绑定表，避免出现笛卡尔积的情况。故绑定表之间的分区键要完全相同。
+#        broadcast-tables: t_user_address
+        default-database-strategy:
+          standard:
+            sharding-algorithm-name: database_inline
+            sharding-column: user_id
+        key-generators:
+          snowflake:
             props:
-              default: 0
+              worker-id: 123
+            type: SNOWFLAKE
+        tables:
+          t_order:
+            actual-data-nodes: ds_$->{0..1}.t_order_$->{0..15}
+#            key-generate-strategy:
+#              column: id
+#              key-generator-name: snowflake
+            table-strategy:
+              standard:
+                sharding-algorithm-name: t_order_inline
+                sharding-column: user_id
+          t_order_item:
+            actual-data-nodes: ds_$->{0..1}.t_order_item_$->{0..15}
+#            key-generate-strategy:
+#              column: order_id
+#              key-generator-name: snowflake
+            table-strategy:
+              standard:
+                sharding-algorithm-name: t_order_item_inline
+                sharding-column: user_id
+        sharding-algorithms:
+          database_inline:
+            props:
+              algorithm-expression: ds_$->{user_id % 2}
+            type: INLINE
+          t_order_inline:
+            props:
+              algorithm-expression: t_order_$->{user_id % 16}
+            type: INLINE
+          t_order_item_inline:
+            props:
+              algorithm-expression: t_order_item_$->{user_id % 16}
+            type: INLINE
