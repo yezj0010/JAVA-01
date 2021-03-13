@@ -6,7 +6,7 @@
 springboot2.*与shardingSphere5.0.0-alpha存在兼容性问题。  
 
 
-操作步骤  
+测试步骤  
 ####1.初始化数据库
 建表sql见**initSimpleShop.sql**  
 本建表语句使用了存储过程，批量创建分表。  
@@ -84,4 +84,28 @@ PS：
 解决办法：将JPA替换成mybatis，解决了该问题。（多次尝试不同的写法，想禁止update语句重写，但没效果）。       
 
 ### 第8周第2课作业2：（必做）基于 hmily TCC 或 ShardingSphere 的 Atomikos XA 实现一个简单的分布式事务应用 demo（二选一）。  
+代码见项目**week8class2work2_sharding_xa**  
+使用了ShardingSphere的atomikos的XA实现了简单的分布式事务。  
+由于兼容性问题，本项目相比上一个作业，依赖包从shardingsphere-jdbc-core-spring-boot-starter改成了shardingsphere-jdbc-core。  
+这样就可以将springboot改成2.*，然后就可以依赖shardingsphere-transaction-xa-core，否则会因为版本问题报错。  
+分库分表配置在类ShardingDatabasesAndTablesConfigurationPrecise中，拷贝官方demo，做了一定修改。  
+分布式事务配置在类TransactionConfiguration中，拷贝官方demo。  
+
+测试步骤  
+####1.初始化数据库  
+建表sql见**initSimpleShop.sql**    
+和上题一样的步骤创建好库和表。      
+
+####2.演示插入数据，然后报错事务回滚  
+启动项目
+打开 http://localhost:8022/swagger-ui.html 页面。  
+可以看到2个接口：  
+/insertData  --  增加3条数据，参数传true会抛出异常，可测试是否回滚  
+/listAll  --  查看所有订单   
+
+调用insertData接口，有个isThrowException参数：  
+如果值不是1，会正常插入，调用listAll接口，可以看到返回参数中订单数量增加了3   
+如果传参值为1，则会抛出异常，然后进行回滚。调用listAll接口，可以看到返回参数中订单数量相比上一次没有增加。    
+
+从测试结果可以确认，分布式XA事务生效。  
 
