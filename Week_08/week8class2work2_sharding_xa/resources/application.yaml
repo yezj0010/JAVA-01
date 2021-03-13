@@ -1,0 +1,73 @@
+server:
+  port: 8022
+
+#spring:
+#  shardingsphere:
+#    props:
+#      sql-show: true
+#    datasource:
+#      names: ds0,ds1
+#      ds0:
+#        driver-class-name: com.mysql.jdbc.Driver
+#        jdbc-url: jdbc:mysql://localhost:9316/shop?serverTimezone=UTC&useSSL=false
+#        max-active: 16
+#        password: 123456
+#        type: com.zaxxer.hikari.HikariDataSource
+#        username: root
+#      ds1:
+#        driver-class-name: com.mysql.jdbc.Driver
+#        jdbc-url: jdbc:mysql://localhost:9317/shop?serverTimezone=UTC&useSSL=false
+#        max-active: 16
+#        password: 123456
+#        type: com.zaxxer.hikari.HikariDataSource
+#        username: root
+#    rules:
+#      sharding:
+##        binding-tables: t_order,t_order_item  # 将这两张表这只为绑定表，避免出现笛卡尔积的情况。故绑定表之间的分区键要完全相同。
+##        broadcast-tables: t_user_address
+#        default-database-strategy:
+#          standard:
+#            sharding-algorithm-name: database_inline
+#            sharding-column: user_id
+#        key-generators:
+#          snowflake:
+#            props:
+#              worker-id: 123
+#            type: SNOWFLAKE
+#        tables:
+#          t_order:
+#            actual-data-nodes: ds$->{0..1}.t_order_$->{0..15}
+##            key-generate-strategy:
+##              column: id
+##              key-generator-name: snowflake
+#            table-strategy:
+#              standard:
+#                sharding-algorithm-name: t_order_inline
+#                sharding-column: user_id
+#          t_order_item:
+#            actual-data-nodes: ds$->{0..1}.t_order_item_$->{0..15}
+##            key-generate-strategy:
+##              column: order_id
+##              key-generator-name: snowflake
+#            table-strategy:
+#              standard:
+#                sharding-algorithm-name: t_order_item_inline
+#                sharding-column: user_id
+#        sharding-algorithms:
+#          database_inline:
+#            props:
+#              algorithm-expression: ds$->{user_id % 2}
+#            type: INLINE
+#          t_order_inline:
+#            props:
+#              algorithm-expression: t_order_$->{user_id % 16}
+#            type: INLINE
+#          t_order_item_inline:
+#            props:
+#              algorithm-expression: t_order_item_$->{user_id % 16}
+#            type: INLINE
+#
+#com:
+#  atomikos:
+#    icatch:
+#      service: 222
