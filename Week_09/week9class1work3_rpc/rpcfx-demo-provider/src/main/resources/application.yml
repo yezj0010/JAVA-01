@@ -1,0 +1,6 @@
+server:
+  port: 9013
+  
+  profiles:
+    active: true
+
