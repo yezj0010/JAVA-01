@@ -1,4 +1,4 @@
-package io.kimmking.rpcfx.demo.api;
+package io.kimmking.rpcfx.demo.entity;
 
 public class Order {
 

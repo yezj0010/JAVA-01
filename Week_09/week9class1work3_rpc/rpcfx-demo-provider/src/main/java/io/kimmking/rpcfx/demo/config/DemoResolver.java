@@ -1,4 +1,4 @@
-package io.kimmking.rpcfx.demo.provider;
+package io.kimmking.rpcfx.demo.config;
 
 import io.kimmking.rpcfx.api.RpcfxResolver;
 import org.springframework.context.ApplicationContext;
