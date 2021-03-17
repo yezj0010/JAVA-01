@@ -1,5 +1,8 @@
 package io.kimmking.rpcfx.demo.entity;
 
+import lombok.Data;
+
+@Data
 public class Order {
 
     private int id;
