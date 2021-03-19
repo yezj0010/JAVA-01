@@ -16,6 +16,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 public final class Rpcfx {
@@ -55,6 +56,7 @@ public final class Rpcfx {
         request.setServiceClass(tClass.getName());
         request.setMethod(method);
         request.setParams(args);
+        request.setTraceId(UUID.randomUUID()+"");
 
         if (null!=filters) {
             for (Filter filter : filters) {
@@ -166,8 +168,7 @@ public final class Rpcfx {
 
     private static RpcfxResponse postByNetty(RpcfxRequest req, String url) throws IOException {
         log.info("通过netty发送post请求");
-        NettyClient.post(url, req);
-        RpcfxResponse rpcfxResponse = NettyClient.get();
+        RpcfxResponse rpcfxResponse = NettyClient.post(url, req);
         return rpcfxResponse;
     }
 }

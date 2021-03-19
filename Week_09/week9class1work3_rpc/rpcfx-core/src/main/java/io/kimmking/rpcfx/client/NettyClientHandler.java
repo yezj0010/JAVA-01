@@ -49,7 +49,6 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
         channelFuture.addListener(new ChannelFutureListener() {
             @Override
             public void operationComplete(ChannelFuture future) throws Exception {
-
                 if(future.isSuccess()) {
                     log.info("===========发送成功");
                 }else {
@@ -68,8 +67,8 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
             String result = buf.toString(CharsetUtil.UTF_8);
             log.info("resp json: {}", result);
             RpcfxResponse rpcfxResponse = JSONObject.parseObject(result, RpcfxResponse.class);
-            NettyHolder.responseThread.set(rpcfxResponse);
-            NettyHolder.countDownLatchThreadLocal.get().countDown();
+            SyncFuture syncFuture = NettyHolder.futureCache.get(req.getTraceId());
+            syncFuture.setResponse(rpcfxResponse);
         }else{
             log.info("未知返回数据");
         }

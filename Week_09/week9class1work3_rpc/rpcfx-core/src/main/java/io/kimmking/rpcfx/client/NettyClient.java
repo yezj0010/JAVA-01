@@ -12,19 +12,21 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.concurrent.CountDownLatch;
-
 /**
  * Created by Deng jin on 2021/1/30 21:25
  */
 @Slf4j
-public class NettyClient extends ChannelInboundHandlerAdapter {
+public class NettyClient {
 
-    public static void post(String url, RpcfxRequest req){
+    public static RpcfxResponse post(String url, RpcfxRequest req){
         HostInfo hostAndPort = getHostAndPort(url);
+
         EventLoopGroup group = new NioEventLoopGroup();
-        Bootstrap bootstrap = new Bootstrap();
         try {
+            //初始化资源
+            NettyHolder.futureCache.put(req.getTraceId(), new SyncFuture());
+            //新建一个连接，因为每次ip端口都可能不一样
+            Bootstrap bootstrap = new Bootstrap();
             bootstrap.group(group)
                     .channel(NioSocketChannel.class)
                     .option(ChannelOption.SO_KEEPALIVE, true)
@@ -43,38 +45,17 @@ public class NettyClient extends ChannelInboundHandlerAdapter {
                     });
             ChannelFuture future = bootstrap.connect(hostAndPort.getHost(), hostAndPort.getPort()).sync();
             future.channel().closeFuture().sync();
+            //获取结果
+            SyncFuture syncFuture = NettyHolder.futureCache.get(req.getTraceId());
+            RpcfxResponse rpcfxResponse = syncFuture.get();
+            return rpcfxResponse;
         } catch (Exception e) {
             log.info("", e);
         }finally{
             group.shutdownGracefully();
+            NettyHolder.futureCache.invalidate(req.getTraceId());
         }
-    }
-
-    /**
-     * 获取结果
-     * @return
-     */
-    public static RpcfxResponse get(){
-//        try{
-//            log.info("等待结果返回");
-//            CountDownLatch countDownLatch = NettyHolder.countDownLatchThreadLocal.get();
-//            countDownLatch.await();
-//            NettyHolder.countDownLatchThreadLocal.remove();
-//            log.info("等到结果，获取结果");
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
-        RpcfxResponse rpcfxResponse = NettyHolder.responseThread.get();
-        while (rpcfxResponse==null){
-            try{
-                log.info("休眠100ms");
-                Thread.sleep(100);
-            }catch (Exception e){
-                log.error("休眠异常", e);
-            }
-        }
-        NettyHolder.responseThread.remove();
-        return rpcfxResponse;
+        return null;
     }
 
     private static HostInfo getHostAndPort(String url){

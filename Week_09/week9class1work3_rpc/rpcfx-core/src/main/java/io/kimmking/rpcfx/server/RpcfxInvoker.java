@@ -37,6 +37,7 @@ public class RpcfxInvoker {
             // 两次json序列化能否合并成一个
             response.setResult(JSON.toJSONString(result, SerializerFeature.WriteClassName));
             response.setStatus(true);
+            response.setTraceId(request.getTraceId());
             return response;
         } catch ( Exception e) {
             log.error("", e);
