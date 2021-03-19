@@ -1,7 +1,10 @@
 package io.kimmking.rpcfx.demo.consumer;
 
+import io.kimmking.rpcfx.client.CommonRpcService;
 import io.kimmking.rpcfx.demo.api.OrderService;
 import io.kimmking.rpcfx.demo.api.UserService;
+import io.kimmking.rpcfx.demo.entity.Order;
+import io.kimmking.rpcfx.demo.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,16 +16,15 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class ConsumerService {
     @Autowired
-    private UserService userService;
-    @Autowired
-    private OrderService orderService;
+    private CommonRpcService commonRpcService;
 
     public void test(){
+        log.info("测试rpc");
 
+        User user = commonRpcService.invoke(UserService.class, "findById", new Object[]{8888}, User.class);
+        log.info("", user);
 
-        userService.findById(2222);
-
-
-        orderService.findOrderById(999);
+        Order order = commonRpcService.invoke(OrderService.class, "findOrderById", new Object[]{888}, Order.class);
+        log.info("", order);
     }
 }

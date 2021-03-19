@@ -6,6 +6,7 @@ import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.ExponentialBackoffRetry;
+import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -16,7 +17,9 @@ import java.util.stream.Collectors;
  * created by DengJin on 2021/3/17 18:06
  */
 @Slf4j
+@Component
 public class TagRouter implements Router {
+
     private static CuratorFramework client;
 
     @Override

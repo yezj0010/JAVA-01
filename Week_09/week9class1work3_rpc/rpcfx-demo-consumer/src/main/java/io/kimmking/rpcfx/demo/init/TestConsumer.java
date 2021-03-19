@@ -15,6 +15,7 @@ public class TestConsumer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        //启动测试
         consumerService.test();
     }
 }

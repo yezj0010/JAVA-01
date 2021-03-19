@@ -7,6 +7,7 @@
 
 
 2）尝试将客户端动态代理改成AOP，添加异常处理  
+增加了切面类
 
 3）尝试使用Netty+HTTP作为client端传输方式  
-
+使用netty+http协议，替代okhttp的调用，入口类在

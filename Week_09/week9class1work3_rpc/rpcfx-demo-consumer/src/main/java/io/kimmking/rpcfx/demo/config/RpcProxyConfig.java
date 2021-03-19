@@ -1,11 +1,6 @@
 package io.kimmking.rpcfx.demo.config;
 
-import io.kimmking.rpcfx.client.Rpcfx;
-import io.kimmking.rpcfx.demo.api.OrderService;
-import io.kimmking.rpcfx.demo.api.UserService;
-import io.kimmking.rpcfx.demo.filter.CuicuiFilter;
-import io.kimmking.rpcfx.demo.routebiz.RandomLoadBalancer;
-import io.kimmking.rpcfx.demo.routebiz.TagRouter;
+import io.kimmking.rpcfx.client.CommonRpcService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,23 +11,7 @@ import org.springframework.context.annotation.Configuration;
 public class RpcProxyConfig {
 
     @Bean
-    public UserService getUserService(){
-        //2.使用AOP实现代理类逻辑
-        UserService userService = Rpcfx.createFromRegistry(
-                UserService.class, "localhost:2181",
-                new TagRouter(),
-                new RandomLoadBalancer(),
-                new CuicuiFilter());
-        return userService;
-    }
-
-    @Bean
-    public OrderService getOrderService(){
-        OrderService orderService = Rpcfx.createFromRegistry(
-                OrderService.class, "localhost:2181",
-                new TagRouter(),
-                new RandomLoadBalancer(),
-                new CuicuiFilter());
-        return orderService;
+    public CommonRpcService getCommonRpcService(){
+        return new CommonRpcService();
     }
 }

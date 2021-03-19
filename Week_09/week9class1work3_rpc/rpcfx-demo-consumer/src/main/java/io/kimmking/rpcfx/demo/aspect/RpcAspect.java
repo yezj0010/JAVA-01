@@ -1,14 +1,16 @@
 package io.kimmking.rpcfx.demo.aspect;
 
+import io.kimmking.rpcfx.api.Filter;
+import io.kimmking.rpcfx.api.LoadBalancer;
+import io.kimmking.rpcfx.api.Router;
+import io.kimmking.rpcfx.client.Rpcfx;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.lang.reflect.Method;
 
 /**
  * created by DengJin on 2021/3/17 18:50
@@ -17,8 +19,16 @@ import java.lang.reflect.Method;
 @Aspect
 @Component
 public class RpcAspect {
+    @Autowired
+    private Router router;
+    @Autowired
+    private LoadBalancer loadBalancer;
 
-    @Pointcut("execution(* io.kimmking.rpcfx.demo.consumer.RpcProxyGenerator.generate(java.lang.Object,..))")
+    @Autowired
+    private Filter[] filters;
+
+//    @Pointcut("execution(* io.kimmking.rpcfx.demo.entity..*.*(..))")
+    @Pointcut("@annotation(io.kimmking.rpcfx.client.RpcInvoke)")
     public void rpcPointCut() {
     }
 
@@ -30,13 +40,15 @@ public class RpcAspect {
      */
     @Around("rpcPointCut()")
     public Object around(ProceedingJoinPoint point) throws Throwable {
-        MethodSignature signature = (MethodSignature) point.getSignature();
-        Method method = signature.getMethod();
         Object[] args = point.getArgs();
-        String serviceName = point.getTarget().getClass().getName();
 
+        Class serviceClass = (Class)args[0];
+        String methodStr = (String)args[1];
+        Object[] params = (Object[])args[2];
+        Class resultClass = (Class) args[3];
 
-        return null;
+        Object result = Rpcfx.invoke(serviceClass, methodStr, params, resultClass, router, loadBalancer, filters);
+        return result;
 
     }
 }
