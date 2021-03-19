@@ -2,7 +2,7 @@
 
 ### 第9周第1课作业3：（必做）改造自定义RPC的程序
 代码见项目**week9class1work3_rpc**，该项目是基于秦老师的rpcDemo进行改造。  
-目录结构相比demo进行了优化，以便更方面阅读代码。以下是作业内容介绍：  
+目录结构相比demo进行了优化，以便阅读代码。以下是作业内容介绍：  
 
 1）尝试将服务端写死查找接口实现类变成泛型和反射  
 老师demo中似乎已经实现，不知道如何更改。
@@ -30,7 +30,7 @@ NettyHolder ==== 根据traceId缓存SyncFuture信息
 SyncFuture ==== 使用CountDownLatch保证Rpcfx调用postByNetty可以同步拿到调用结果
   
 4）其他修改  
-1. 服务端，启动的时候，自动注册带有RpcService注解的类信息到zookeeper中，对应的修改了   
+1. 服务端，启动的时候，自动注册带有RpcService注解的类信息到zookeeper中，主要涉及的类是RegisterToZookeeper   
 2. 客户端，完善了TagRouter类，会从zookeeper获取注册的服务信息  
 3. 客户端，完善了RandomLoadBalancer类，使用Random类实现了简单的随机。  
 
@@ -38,4 +38,17 @@ SyncFuture ==== 使用CountDownLatch保证Rpcfx调用postByNetty可以同步拿�
 测试流程：  
 先启动zookeeper,该项目zookeeper端口默认使用2181，  
 启动服务端，启动后查看zookeeper，可以看到注册了信息到zookeeper中，    
-启动测试端，会自动运行TestConsumer的run方法，通过日志查看，可知道客户端从zookeeper拿到服务端信息，调用了http接口，并拿到结果。  
+启动测试端，会自动运行TestConsumer的run方法，通过日志查看，可知道客户端从zookeeper拿到服务端信息，调用了http接口，并拿到结果。
+
+### 第9周第2课作业2：（选做）按dubbo-samples项目的各个demo学习具体功能使用。  
+运行一遍dubbo-samples的项目的demo，总结如下：  
+
+
+### 第9周第2课作业3：（必做）结合dubbo+hmily，实现一个TCC外汇交易处理  
+代码见项目**week9class2work1_dubbo_hmily_tcc**
+1）用户A的美元账户和人民币账户都在A库，A使用1美元兑换7人民币；   
+2）用户B的美元账户和人民币账户都在B库，B使用7人民币兑换1美元；   
+3）设计账户表，冻结资产表，实现上述两个本地事务的分布式事务。    
+
+
+
