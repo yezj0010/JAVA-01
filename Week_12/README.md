@@ -1,5 +1,5 @@
-- [第12周第1课作业1]
-- [第12周第2课作业1]  
+- [第12周第1课作业1](#%E7%AC%AC12%E5%91%A8%E7%AC%AC1%E8%AF%BE%E4%BD%9C%E4%B8%9A1%E5%BF%85%E5%81%9A%E9%85%8D%E7%BD%AE-redis-%E7%9A%84%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6sentinel-%E9%AB%98%E5%8F%AF%E7%94%A8cluster-%E9%9B%86%E7%BE%A4)
+- [第12周第2课作业1](#%E7%AC%AC12%E5%91%A8%E7%AC%AC2%E8%AF%BE%E4%BD%9C%E4%B8%9A1%E6%90%AD%E5%BB%BA-activemq-%E6%9C%8D%E5%8A%A1%E5%9F%BA%E4%BA%8E-jms%E5%86%99%E4%BB%A3%E7%A0%81%E5%88%86%E5%88%AB%E5%AE%9E%E7%8E%B0%E5%AF%B9%E4%BA%8E-queue-%E5%92%8C-topic-%E7%9A%84%E6%B6%88%E6%81%AF%E7%94%9F%E4%BA%A7%E5%92%8C%E6%B6%88%E8%B4%B9)
 **这是第12周作业**  
 
 共两个必选，记录如下：
@@ -401,5 +401,39 @@ cluster_stats_messages_received:31
 ```
 
 ## 第12周第2课作业1：搭建 ActiveMQ 服务，基于 JMS，写代码分别实现对于 queue 和 topic 的消息生产和消费
-代码见项目**week12class2work1_activemq**
+代码见项目**week12class2work1_activemq**，springboot+activemq实现。    
+启动activemq，  
+启动项目，日志如下，完成了基于jms，对queue和topic的消息生产和消费：(queue消息发送了5条，topic发送了10条。)   
+```
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v2.1.0.RELEASE)
+
+2021-04-10 21:35:39.233  INFO 9748 --- [           main] cc.yezj.ActiveMqApplication              : Starting ActiveMqApplication on yezj with PID 9748 (F:\projects\java\JAVA-01\Week_12\week12class2work1_activemq\target\classes started by yezj in F:\projects\java\JAVA-01)
+2021-04-10 21:35:39.235  INFO 9748 --- [           main] cc.yezj.ActiveMqApplication              : No active profile set, falling back to default profiles: default
+2021-04-10 21:35:39.838  INFO 9748 --- [           main] cc.yezj.ActiveMqApplication              : Started ActiveMqApplication in 0.805 seconds (JVM running for 1.653)
+2021-04-10 21:35:39.880  INFO 9748 --- [enerContainer-1] cc.yezj.consumer.QueueConsumer           : 接收到queue=test.queue的消息,msg={"code":"code1","cnt":0,"createTime":{"month":"APRIL","year":2021,"dayOfMonth":10,"dayOfWeek":"SATURDAY","dayOfYear":100,"monthValue":4,"hour":21,"minute":35,"nano":841000000,"second":39,"chronology":{"id":"ISO","calendarType":"iso8601"}}}
+2021-04-10 21:35:39.888  INFO 9748 --- [enerContainer-1] cc.yezj.consumer.QueueConsumer           : 接收到queue=test.queue的消息,msg={"code":"code2","cnt":1,"createTime":{"month":"APRIL","year":2021,"dayOfMonth":10,"dayOfWeek":"SATURDAY","dayOfYear":100,"monthValue":4,"hour":21,"minute":35,"nano":882000000,"second":39,"chronology":{"id":"ISO","calendarType":"iso8601"}}}
+2021-04-10 21:35:39.901  INFO 9748 --- [enerContainer-1] cc.yezj.consumer.QueueConsumer           : 接收到queue=test.queue的消息,msg={"code":"code3","cnt":2,"createTime":{"month":"APRIL","year":2021,"dayOfMonth":10,"dayOfWeek":"SATURDAY","dayOfYear":100,"monthValue":4,"hour":21,"minute":35,"nano":895000000,"second":39,"chronology":{"id":"ISO","calendarType":"iso8601"}}}
+2021-04-10 21:35:39.908  INFO 9748 --- [enerContainer-1] cc.yezj.consumer.QueueConsumer           : 接收到queue=test.queue的消息,msg={"code":"code4","cnt":3,"createTime":{"month":"APRIL","year":2021,"dayOfMonth":10,"dayOfWeek":"SATURDAY","dayOfYear":100,"monthValue":4,"hour":21,"minute":35,"nano":903000000,"second":39,"chronology":{"id":"ISO","calendarType":"iso8601"}}}
+2021-04-10 21:35:39.914  INFO 9748 --- [enerContainer-1] cc.yezj.consumer.QueueConsumer           : 接收到queue=test.queue的消息,msg={"code":"code5","cnt":4,"createTime":{"month":"APRIL","year":2021,"dayOfMonth":10,"dayOfWeek":"SATURDAY","dayOfYear":100,"monthValue":4,"hour":21,"minute":35,"nano":910000000,"second":39,"chronology":{"id":"ISO","calendarType":"iso8601"}}}
+2021-04-10 21:35:39.927  INFO 9748 --- [enerContainer-1] cc.yezj.consumer.TopicConsumer           : 接收到topic=test.topic的消息,msg={"channel":"ch1","rate":0,"createTime":{"month":"APRIL","year":2021,"dayOfMonth":10,"dayOfWeek":"SATURDAY","dayOfYear":100,"monthValue":4,"hour":21,"minute":35,"nano":916000000,"second":39,"chronology":{"id":"ISO","calendarType":"iso8601"}}}
+2021-04-10 21:35:39.940  INFO 9748 --- [enerContainer-1] cc.yezj.consumer.TopicConsumer           : 接收到topic=test.topic的消息,msg={"channel":"ch2","rate":1,"createTime":{"month":"APRIL","year":2021,"dayOfMonth":10,"dayOfWeek":"SATURDAY","dayOfYear":100,"monthValue":4,"hour":21,"minute":35,"nano":928000000,"second":39,"chronology":{"id":"ISO","calendarType":"iso8601"}}}
+2021-04-10 21:35:39.950  INFO 9748 --- [enerContainer-1] cc.yezj.consumer.TopicConsumer           : 接收到topic=test.topic的消息,msg={"channel":"ch3","rate":2,"createTime":{"month":"APRIL","year":2021,"dayOfMonth":10,"dayOfWeek":"SATURDAY","dayOfYear":100,"monthValue":4,"hour":21,"minute":35,"nano":940000000,"second":39,"chronology":{"id":"ISO","calendarType":"iso8601"}}}
+2021-04-10 21:35:39.960  INFO 9748 --- [enerContainer-1] cc.yezj.consumer.TopicConsumer           : 接收到topic=test.topic的消息,msg={"channel":"ch4","rate":3,"createTime":{"month":"APRIL","year":2021,"dayOfMonth":10,"dayOfWeek":"SATURDAY","dayOfYear":100,"monthValue":4,"hour":21,"minute":35,"nano":951000000,"second":39,"chronology":{"id":"ISO","calendarType":"iso8601"}}}
+2021-04-10 21:35:39.964  INFO 9748 --- [enerContainer-1] cc.yezj.consumer.TopicConsumer           : 接收到topic=test.topic的消息,msg={"channel":"ch5","rate":4,"createTime":{"month":"APRIL","year":2021,"dayOfMonth":10,"dayOfWeek":"SATURDAY","dayOfYear":100,"monthValue":4,"hour":21,"minute":35,"nano":961000000,"second":39,"chronology":{"id":"ISO","calendarType":"iso8601"}}}
+2021-04-10 21:35:39.969  INFO 9748 --- [enerContainer-1] cc.yezj.consumer.TopicConsumer           : 接收到topic=test.topic的消息,msg={"channel":"ch6","rate":5,"createTime":{"month":"APRIL","year":2021,"dayOfMonth":10,"dayOfWeek":"SATURDAY","dayOfYear":100,"monthValue":4,"hour":21,"minute":35,"nano":965000000,"second":39,"chronology":{"id":"ISO","calendarType":"iso8601"}}}
+2021-04-10 21:35:39.973  INFO 9748 --- [enerContainer-1] cc.yezj.consumer.TopicConsumer           : 接收到topic=test.topic的消息,msg={"channel":"ch7","rate":6,"createTime":{"month":"APRIL","year":2021,"dayOfMonth":10,"dayOfWeek":"SATURDAY","dayOfYear":100,"monthValue":4,"hour":21,"minute":35,"nano":969000000,"second":39,"chronology":{"id":"ISO","calendarType":"iso8601"}}}
+2021-04-10 21:35:39.977  INFO 9748 --- [enerContainer-1] cc.yezj.consumer.TopicConsumer           : 接收到topic=test.topic的消息,msg={"channel":"ch8","rate":7,"createTime":{"month":"APRIL","year":2021,"dayOfMonth":10,"dayOfWeek":"SATURDAY","dayOfYear":100,"monthValue":4,"hour":21,"minute":35,"nano":973000000,"second":39,"chronology":{"id":"ISO","calendarType":"iso8601"}}}
+2021-04-10 21:35:39.982  INFO 9748 --- [enerContainer-1] cc.yezj.consumer.TopicConsumer           : 接收到topic=test.topic的消息,msg={"channel":"ch9","rate":8,"createTime":{"month":"APRIL","year":2021,"dayOfMonth":10,"dayOfWeek":"SATURDAY","dayOfYear":100,"monthValue":4,"hour":21,"minute":35,"nano":978000000,"second":39,"chronology":{"id":"ISO","calendarType":"iso8601"}}}
+2021-04-10 21:35:39.988  INFO 9748 --- [enerContainer-1] cc.yezj.consumer.TopicConsumer           : 接收到topic=test.topic的消息,msg={"channel":"ch10","rate":9,"createTime":{"month":"APRIL","year":2021,"dayOfMonth":10,"dayOfWeek":"SATURDAY","dayOfYear":100,"monthValue":4,"hour":21,"minute":35,"nano":982000000,"second":39,"chronology":{"id":"ISO","calendarType":"iso8601"}}}
+
+```
+在active控制台，也可看到:  
+queue标签下，多了test.queue  
+topic标签下多了很多，包括test.topic  
 

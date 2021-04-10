@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: redis_lock
+  activemq:
+    user: admin
+    password: admin
+    broker-url: tcp://192.168.1.107:61616
+    pool:
+      enabled: true
+      max-connections: 10
+
+
+
+
